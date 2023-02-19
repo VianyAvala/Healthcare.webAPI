@@ -45,12 +45,12 @@ namespace Healthcare.webAPI.Controllers
         [Route("CreateAppointment")]
         public async Task<IActionResult> CreateAppointment([FromBody] Appointment appointment)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             await _repository.Create(appointment);
-            return CreatedAtRoute("GetAppointmentById", new { id = appointment.id }, appointment);
+            return CreatedAtRoute("GetAppointmentById", new { Id = appointment.id }, appointment);
         }
 
 

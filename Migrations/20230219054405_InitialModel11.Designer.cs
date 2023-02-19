@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Healthcare.webAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230216053042_InitialModel")]
-    partial class InitialModel
+    [Migration("20230219054405_InitialModel11")]
+    partial class InitialModel11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,9 @@ namespace Healthcare.webAPI.Migrations
                     b.Property<string>("Problem")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("specilization")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("id");
 
                     b.HasIndex("Doctorid");
@@ -65,6 +68,9 @@ namespace Healthcare.webAPI.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Experience")
+                        .HasColumnType("int");
+
                     b.Property<int>("MobileNo")
                         .HasColumnType("int");
 
@@ -72,6 +78,9 @@ namespace Healthcare.webAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Qualification")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("specialization")
@@ -109,6 +118,90 @@ namespace Healthcare.webAPI.Migrations
                     b.ToTable("patients");
                 });
 
+            modelBuilder.Entity("Healthcare.webAPI.Models.UserDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Healthcare.webAPI.Models.UserRoleMappings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("UserDetailsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserRolesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserDetailsId");
+
+                    b.HasIndex("UserRolesId");
+
+                    b.ToTable("UserRoleMpping");
+                });
+
+            modelBuilder.Entity("Healthcare.webAPI.Models.UserRoles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("Healthcare.webAPI.Models.Appointment", b =>
                 {
                     b.HasOne("Healthcare.webAPI.Models.Doctor", "Doctor")
@@ -126,6 +219,25 @@ namespace Healthcare.webAPI.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("patient");
+                });
+
+            modelBuilder.Entity("Healthcare.webAPI.Models.UserRoleMappings", b =>
+                {
+                    b.HasOne("Healthcare.webAPI.Models.UserDetails", "UserDetails")
+                        .WithMany()
+                        .HasForeignKey("UserDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Healthcare.webAPI.Models.UserRoles", "UserRoles")
+                        .WithMany()
+                        .HasForeignKey("UserRolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserDetails");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

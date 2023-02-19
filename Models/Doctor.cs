@@ -17,5 +17,11 @@ namespace Healthcare.webAPI.Models
 
         public string specialization { get; set; }
 
+        public string  Qualification { get; set; }
+
+        public int Experience { get; set; }
+
+
+
     }
 }

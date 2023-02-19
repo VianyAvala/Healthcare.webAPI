@@ -44,7 +44,7 @@ namespace Healthcare.webAPI.Controllers
         [Route("CreatePatient")]
         public async Task<IActionResult> CreatePatient([FromBody] Patient patient) 
          {
-            if(ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return BadRequest();
             }

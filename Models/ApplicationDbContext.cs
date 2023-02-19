@@ -15,5 +15,10 @@ namespace Healthcare.webAPI.Models
         public DbSet<Patient>  patients{ get; set; }
         public DbSet<Doctor>Doctors { get; set; }
         public DbSet <Appointment> Appointments { get; set; }
+
+        public DbSet<UserDetails> Users { get; set; }
+        public DbSet<UserRoles> Roles { get; set; }
+
+        public DbSet<UserRoleMappings> UserRoleMpping { get; set; }
     }
 }
